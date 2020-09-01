@@ -1,11 +1,9 @@
 import sys
-import time
-from hermess import log, plot
+from hermess import log
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 import matplotlib
 matplotlib.use('Qt5Agg')
 
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 
