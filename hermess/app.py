@@ -1,4 +1,6 @@
 import sys
+import random
+
 from hermess import log
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 import matplotlib
@@ -28,40 +30,21 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.stopButton.clicked.connect(self.stop_logging)
         self.saveButton.clicked.connect(self.save_results)
 
-        # Create the maptlotlib FigureCanvas object,
-        # which defines a single set of axes as self.axes.
-        sc = MplCanvas(self, width=5, height=4, dpi=100)
+        self.startUp()
+        self.setUpWidget()
 
-        # Create our pandas DataFrame with some simple
-        # data and headers.
-        df = pd.DataFrame([
-           [0, 10], [5, 15], [2, 20], [15, 25], [4, 10],
-        ], columns=['A', 'B'])
 
-        # plot the pandas DataFrame, passing in the
-        # matplotlib Canvas axes.
-        df.plot(ax=sc.axes)
-
-        # Create toolbar, passing canvas as first parament, parent (self, the MainWindow) as second.
-        toolbar = NavigationToolbar(sc, self)
-
-        layout = QtWidgets.QVBoxLayout()
-        layout.addWidget(toolbar)
-        layout.addWidget(sc)
-
-        # Create a placeholder widget to hold our toolbar and canvas.
-        self.plotWidget.setLayout(layout)
-        #self.setCentralWidget(widget)
-        self.plotWidget.show()
+    def startUp(self):
+        self.plotWidget
 
     def start_logging(self):
         log.setup(self)
 
     def stop_logging(self):
-        log.stop()
+        log.stop(self)
 
     def save_results(self):
-        pass
+        self.updatePlot()
 
     def closeEvent(self, event):
         if not log.getTable():
@@ -81,6 +64,35 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     event.accept()
             else:
                 event.ignore()
+
+    def setUpWidget(self):
+        # Create the maptlotlib FigureCanvas object,
+        # which defines a single set of axes as self.axes.
+        self.canvas = MplCanvas(self, width=5, height=4, dpi=100)
+        layout = QtWidgets.QVBoxLayout()
+        layout.addWidget(self.canvas)
+
+        # Create a placeholder widget to hold our toolbar and canvas.
+        self.plotWidget.setLayout(layout)
+        # self.setCentralWidget(widget)
+        self.plotWidget.show()
+
+        self.ydata = [random.randint(0, 10) for i in range(100)]
+
+        self.canvas.axes.cla()
+        self.canvas.axes.plot(self.ydata, 'r')
+        self.canvas.draw()
+
+    def updatePlot(self):
+        self.canvas.axes.cla()
+        # Adds data
+        if len(self.ydata) < 200:
+            self.ydata = self.ydata + [random.randint(0, 10)]
+        # Continous writing
+        else:
+            self.ydata = self.ydata[1:] + [random.randint(0, 10)]
+        self.canvas.axes.plot(self.ydata, 'r')
+        self.canvas.draw()
 
 
 def run():

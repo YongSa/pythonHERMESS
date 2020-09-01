@@ -1,7 +1,7 @@
-def setup(obj):
+def setup(self):
     pass
 
-def stop():
+def stop(self):
     pass
 
 def receive(msg):
