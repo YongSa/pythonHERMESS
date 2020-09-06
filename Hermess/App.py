@@ -1,5 +1,4 @@
 import sys
-import threading
 from Hermess import Log
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 import matplotlib
