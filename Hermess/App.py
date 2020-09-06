@@ -41,32 +41,28 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         Log.stopLog(self)
 
     def save_results(self):
-        self.updatePlot()
+        pass
 
     def closeEvent(self, event):
-        if not Log.getTable():
-            try:
-                Log.stop()
-            finally:
-                event.accept()
+        close = QtWidgets.QMessageBox.question(self,
+                                     "Exit",
+                                     "Sure you want to close?",
+                                     QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+        if close == QtWidgets.QMessageBox.Yes:
+            event.accept()
         else:
-            close = QtWidgets.QMessageBox.question(self,
-                                         "Exit",
-                                         "Output wasn't saved. Sure you want to close?",
-                                         QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-            if close == QtWidgets.QMessageBox.Yes:
-                try:
-                    Log.stop()
-                finally:
-                    event.accept()
-            else:
-                event.ignore()
+            event.ignore()
 
     def setUpWidget(self):
         # Create the maptlotlib FigureCanvas object,
         # which defines a single set of axes as self.axes.
         self.canvas = MplCanvas(self, width=5, height=4, dpi=100)
+
+        # Create toolbar, passing canvas as first parament, parent (self, the MainWindow) as second.
+        toolbar = NavigationToolbar(self.canvas, self)
+
         layout = QtWidgets.QVBoxLayout()
+        layout.addWidget(toolbar)
         layout.addWidget(self.canvas)
 
         # Create a placeholder widget to hold our toolbar and canvas.
