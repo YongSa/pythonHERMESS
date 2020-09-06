@@ -74,6 +74,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.ydata = [data, temp, []]
 
+        self.plotted = False
+
         self.canvas.axes.cla()
         self.canvas.axes.plot(self.ydata[0][0], 'r')
         self.canvas.draw()

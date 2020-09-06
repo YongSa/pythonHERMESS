@@ -1,4 +1,4 @@
-import random
+import copy
 import threading
 import time
 
@@ -16,15 +16,22 @@ def updatePlot(self):
         running = self.threadPackage[2]
         self.threadPackage[0].release()
         time.sleep(0.01)
+    self.threadPackage[5].close()
 
 def startLog(self):
     lock = threading.Lock()
     thread = threading.Thread(target=updatePlot, args=(self,))
     thread.daemon = True
     running = True
+    self.plotted = True
     force = open("log/20200212-135138.txt", 'r')
     temp = open("log/20200214-180026.txt", 'r')
-    self.threadPackage = [lock, thread, running, force, temp]
+    dataSt = [[], [], [], [], [], []]
+    tempSt = [[], [], []]
+    self.allData = [copy.deepcopy(dataSt), copy.deepcopy(tempSt), copy.deepcopy(dataSt), copy.deepcopy(tempSt), []]
+    timeNow = time.localtime(time.time())
+    save = open("log/%s%02d%02d-%02d%02d%02d.txt" % (timeNow.tm_year, timeNow.tm_mon, timeNow.tm_mday, timeNow.tm_hour, timeNow.tm_min, timeNow.tm_sec), "w+")
+    self.threadPackage = [lock, thread, running, force, temp, save]
     self.threadPackage[1].start()
 
 def stopLog(self):
@@ -69,6 +76,7 @@ def generateData(self):
     self.temp_02Label.setText(str(temp2))
     self.temp_03Label.setText(str(temp3))
 
+    timeNow = time.time()
 
     if len(self.ydata[0][0]) < 100:
         self.ydata[0][0] = self.ydata[0][0] + [force1]
@@ -82,7 +90,7 @@ def generateData(self):
         self.ydata[1][1] = self.ydata[1][1] + [temp2]
         self.ydata[1][2] = self.ydata[1][1] + [temp3]
 
-        self.ydata[2] = self.ydata[1] + [time.time()]
+        self.ydata[2] = self.ydata[1] + [timeNow]
     # Continous writing
     else:
         self.ydata[0][0] = self.ydata[0][0][1:] + [force1]
@@ -96,4 +104,8 @@ def generateData(self):
         self.ydata[1][1] = self.ydata[1][1][1:] + [temp2]
         self.ydata[1][2] = self.ydata[1][1][1:] + [temp3]
 
-    self.ydata[2] = self.ydata[1][1:] + [time.time()]
+    self.ydata[2] = self.ydata[1][1:] + [timeNow]
+
+    string = "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (force1, force2, force3, force4, force5, force6,
+                                                           temp1, temp2, temp3, timeNow)
+    self.threadPackage[5].write(string)
