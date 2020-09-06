@@ -9,7 +9,8 @@ def updatePlot(self):
         # Adds data
         generateData(self)
 
-        self.canvas.axes.plot(self.ydata[0][0], 'r')
+        selectedGraph = int(self.dmsChooser.value()) - 1
+        self.canvas.axes.plot(self.ydata[0][selectedGraph], 'r')
         self.canvas.draw()
         self.threadPackage[0].acquire()
         running = self.threadPackage[2]
@@ -56,6 +57,18 @@ def generateData(self):
     temp1 = float(tempData[10])
     temp2 = float(tempData[11])
     temp3 = float(tempData[12])
+
+    self.dms_01Label.setText(str(force1))
+    self.dms_02Label.setText(str(force2))
+    self.dms_03Label.setText(str(force3))
+    self.dms_04Label.setText(str(force4))
+    self.dms_05Label.setText(str(force5))
+    self.dms_06Label.setText(str(force6))
+
+    self.temp_01Label.setText(str(temp1))
+    self.temp_02Label.setText(str(temp2))
+    self.temp_03Label.setText(str(temp3))
+
 
     if len(self.ydata[0][0]) < 100:
         self.ydata[0][0] = self.ydata[0][0] + [force1]
