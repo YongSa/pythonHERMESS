@@ -74,10 +74,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # self.setCentralWidget(widget)
         self.plotWidget.show()
 
-        self.ydata = []
+        data = [[],[],[],[],[],[]]
+        temp = [[],[],[]]
+
+        self.ydata = [data, temp, []]
 
         self.canvas.axes.cla()
-        self.canvas.axes.plot(self.ydata, 'r')
+        self.canvas.axes.plot(self.ydata[0][0], 'r')
         self.canvas.draw()
 
 
