@@ -78,7 +78,7 @@
        </rect>
       </property>
       <property name="title">
-       <string>Ouput</string>
+       <string>Output</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -376,8 +376,11 @@
         <height>22</height>
        </rect>
       </property>
+      <property name="minimum">
+       <number>1</number>
+      </property>
       <property name="maximum">
-       <number>5</number>
+       <number>6</number>
       </property>
      </widget>
     </widget>
