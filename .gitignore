@@ -34,9 +34,7 @@ PythonHERMESS.creator.user.35dcb23
 PythonHERMESS.cxxflags
 PythonHERMESS.files
 PythonHERMESS.includes
-
 log/*
-!log/help_me.txt
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
