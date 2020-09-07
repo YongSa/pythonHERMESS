@@ -148,6 +148,7 @@ def readData(self):
         ser.open()
     except:
         startStopRead(self)
+        running  = False
         #TODO: os.remove(self.threadReadPackage[3].name)
 
     while running == True:
@@ -173,7 +174,8 @@ def readData(self):
             print("Keyboard Interrupt")
             raise
 
-    ser.close()
+    if running:
+        ser.close()
     self.threadReadPackage[3].close()
 
 def updatePlot(self):
