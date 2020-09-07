@@ -141,7 +141,7 @@ def startStopRead(self):
 
 def readData(self):
     running = True
-    ser = serial.Serial("COM3", 19200)
+    ser = serial.Serial("COM3", 19200, stopbits=1, parity=serial.PARITY_NONE)
     ser.close()
     ser.open()
 
@@ -150,16 +150,16 @@ def readData(self):
         running = self.threadReadPackage[2]
         self.threadReadPackage[0].release()
         try:
-            getVal = ser.readline()
-            print(getVal)
-            try:
-                val = int(getVal)
-                self.threadReadPackage[3].write("%d\t\t%s\n" % (val, time.time()))
-                self.threadReadPackage[0].acquire()
-                self.allData.append(val)
-                self.threadReadPackage[0].release()
-            except:
-                pass
+            getVal = ser.read_until()
+            print(r''"%s" % getVal)
+            # try:
+            #     val = int(getVal)
+            #     self.threadReadPackage[3].write("%d\t\t%s\n" % (val, time.time()))
+            #     self.threadReadPackage[0].acquire()
+            #     self.allData.append(val)
+            #     self.threadReadPackage[0].release()
+            # except:
+            #     pass
 
         except:
             print("Keyboard Interrupt")
