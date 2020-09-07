@@ -151,10 +151,9 @@ def readData(self):
         running = self.threadReadPackage[2]
         self.threadReadPackage[0].release()
         try:
-            #TODO
-            #LIST com ports in combo box
-            #autosave
-            #start stop reicht
+            # TODO
+            # LIST com ports in combo box
+            # autosave
 
             getVal = ser.read_until(b'\xff')
             listTestByte = list(getVal)
@@ -162,7 +161,7 @@ def readData(self):
             print(testVal)
             
             val = testVal #int(getVal)
-            self.threadReadPackage[3].write("%d\t\t%s\n" % (val, time.time()))
+            self.threadReadPackage[3].write("%d\t\t%s\n" % (val, time.localtime(time.time())))
             self.threadReadPackage[0].acquire()
             self.allData.append(val)
             self.threadReadPackage[0].release()
