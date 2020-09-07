@@ -142,9 +142,13 @@ def startStopRead(self):
 
 def readData(self):
     running = True
-    ser = serial.Serial(self.port, 19200, stopbits=1, parity=serial.PARITY_NONE)
-    ser.close()
-    ser.open()
+    try:
+        ser = serial.Serial(self.port, 19200, stopbits=1, parity=serial.PARITY_NONE)
+        ser.close()
+        ser.open()
+    except:
+        startStopRead(self)
+        #TODO: os.remove(self.threadReadPackage[3].name)
 
     while running == True:
         self.threadReadPackage[0].acquire()
