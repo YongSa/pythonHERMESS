@@ -20,13 +20,14 @@ qtCreatorFile = "mainwindow.ui"
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
-    def __init__(self):
+    def __init__(self, port):
+        self.port = port
         QtWidgets.QMainWindow.__init__(self)
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
         self.startButton.clicked.connect(self.start_logging)
         self.stopButton.clicked.connect(self.stop_logging)
-        self.saveButton.clicked.connect(self.save_results)
+        self.logButton.clicked.connect(self.log_start)
 
         self.startUp()
         self.setUpWidget()
@@ -36,13 +37,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.plotWidget
 
     def start_logging(self):
-        Log.startLog(self)
+        pass
+        #Log.startLog(self)
 
     def stop_logging(self):
-        Log.stopLog(self)
+        pass
+        #Log.stopLog(self)
 
-    def save_results(self):
+    def log_start(self):
         Log.startStopRead(self)
+
     def closeEvent(self, event):
         close = QtWidgets.QMessageBox.question(self,
                                      "Exit",
@@ -84,9 +88,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.canvas.draw()
 
 
-def run():
+def run(port):
     app = QtWidgets.QApplication(sys.argv)
-    window = MainWindow()
+    window = MainWindow(port)
     window.show()
     sys.exit(app.exec_())
 

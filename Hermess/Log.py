@@ -1,6 +1,7 @@
 import threading
 import time
 
+import ctypes
 import serial
 
 # def updatePlot(self):
@@ -141,7 +142,7 @@ def startStopRead(self):
 
 def readData(self):
     running = True
-    ser = serial.Serial("COM3", 19200, stopbits=1, parity=serial.PARITY_NONE)
+    ser = serial.Serial(self.port, 19200, stopbits=1, parity=serial.PARITY_NONE)
     ser.close()
     ser.open()
 
@@ -150,18 +151,23 @@ def readData(self):
         running = self.threadReadPackage[2]
         self.threadReadPackage[0].release()
         try:
-            getVal = ser.read_until()
-            print(r''"%s" % getVal)
-            # try:
-            #     val = int(getVal)
-            #     self.threadReadPackage[3].write("%d\t\t%s\n" % (val, time.time()))
-            #     self.threadReadPackage[0].acquire()
-            #     self.allData.append(val)
-            #     self.threadReadPackage[0].release()
-            # except:
-            #     pass
+            #TODO
+            #LIST com ports in combo box
+            #autosave
+            #start stop reicht
 
+            getVal = ser.read_until(b'\xff')
+            listTestByte = list(getVal)
+            testVal = ctypes.c_int16((listTestByte[0] << 8) | listTestByte[1]).value
+            print(testVal)
+            
+            val = testVal #int(getVal)
+            self.threadReadPackage[3].write("%d\t\t%s\n" % (val, time.time()))
+            self.threadReadPackage[0].acquire()
+            self.allData.append(val)
+            self.threadReadPackage[0].release()
         except:
+            raise
             print("Keyboard Interrupt")
             break
 
