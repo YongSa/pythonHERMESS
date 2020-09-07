@@ -1,3 +1,4 @@
+import os
 import sys
 from Hermess import Log
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
@@ -86,6 +87,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.canvas.axes.cla()
         self.canvas.axes.plot(self.ydata[0][0], 'r')
         self.canvas.draw()
+
+        if not os.path.exists("log"):
+            os.mkdir("log")
 
 
 def run(port):
