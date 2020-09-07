@@ -167,10 +167,8 @@ def readData(self):
             self.allData.append(val)
             self.threadReadPackage[0].release()
         except:
-            raise
             print("Keyboard Interrupt")
-            break
-
+            raise
 
     ser.close()
     self.threadReadPackage[3].close()
@@ -183,6 +181,7 @@ def updatePlot(self):
         self.threadPlotPackage[0].acquire()
         running = self.threadPlotPackage[2]
         self.threadPlotPackage[0].release()
+
         if len(data) > 0:
             self.dms_01Label.setText(str(data[-1]))
 

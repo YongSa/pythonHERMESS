@@ -4,8 +4,9 @@ from serial.tools.list_ports import comports
 from Hermess import App
 
 parser = argparse.ArgumentParser(description='select port')
-parser.add_argument('--ports', action="store_true")
-parser.add_argument('-p', default='COM3')
+groupSingle = argparse.parser.add_mutually_exclusive_group()
+groupSingle.add_argument('--ports', action="store_true")
+groupSingle.add_argument('-p', default='COM3')
 
 if __name__ == '__main__':
     args = parser.parse_args()
