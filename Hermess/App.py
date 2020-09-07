@@ -1,6 +1,8 @@
 import sys
+from time import sleep
 from Hermess import Log
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
+import serial
 import matplotlib
 matplotlib.use('Qt5Agg')
 
@@ -39,8 +41,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def stop_logging(self):
         Log.stopLog(self)
 
+    #HIER
     def save_results(self):
-        pass
+        ser = serial.Serial("COM3",19200)
+        ser.close()
+        ser.open()
+        while True:
+            try:
+                getVal = ser.readline()
+                print(getVal)
+            except:
+                print("Keyboard Interrupt")
+                break
 
     def closeEvent(self, event):
         close = QtWidgets.QMessageBox.question(self,
