@@ -1,9 +1,9 @@
 import sys
-from time import sleep
 from Hermess import Log
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
-import serial
 import matplotlib
+import collections
+
 matplotlib.use('Qt5Agg')
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT as NavigationToolbar
@@ -41,19 +41,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def stop_logging(self):
         Log.stopLog(self)
 
-    #HIER
     def save_results(self):
-        ser = serial.Serial("COM3",19200)
-        ser.close()
-        ser.open()
-        while True:
-            try:
-                getVal = ser.readline()
-                print(getVal)
-            except:
-                print("Keyboard Interrupt")
-                break
-
+        Log.startStopRead(self)
     def closeEvent(self, event):
         close = QtWidgets.QMessageBox.question(self,
                                      "Exit",
@@ -87,6 +76,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ydata = [data, temp, []]
 
         self.plotted = False
+        self.startStopRead = False
+        self.allData = collections.deque(maxlen=200)
 
         self.canvas.axes.cla()
         self.canvas.axes.plot(self.ydata[0][0], 'r')
