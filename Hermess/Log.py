@@ -154,7 +154,7 @@ def readData(self):
             print(getVal)
             try:
                 val = int(getVal)
-                self.threadReadPackage[3].write("%d\n" % val)
+                self.threadReadPackage[3].write("%d\t\t%s\n" % (val, time.time()))
                 self.threadReadPackage[0].acquire()
                 self.allData.append(val)
                 self.threadReadPackage[0].release()
@@ -177,6 +177,8 @@ def updatePlot(self):
         self.threadPlotPackage[0].acquire()
         running = self.threadPlotPackage[2]
         self.threadPlotPackage[0].release()
+        if len(data) > 0:
+            self.dms_01Label.setText(str(data[-1]))
 
         self.canvas.axes.cla()
         self.canvas.axes.plot(data, 'r')
