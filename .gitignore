@@ -26,6 +26,15 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+PythonHERMESS.cflags
+PythonHERMESS.config
+PythonHERMESS.creator
+PythonHERMESS.creator.user
+PythonHERMESS.creator.user.35dcb23
+PythonHERMESS.cxxflags
+PythonHERMESS.files
+PythonHERMESS.includes
+
 log/*
 !log/help_me.txt
 
