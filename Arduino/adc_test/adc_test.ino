@@ -19,6 +19,7 @@
 uint8_t drdy = 0;
 int16_t calVals[12];
 uint8_t calCount = 0;
+bool r = false;
 
 void isr_drdy () {
   drdy++;
@@ -86,7 +87,7 @@ void setup() {
     0x42, // WREG operation with start register address 2
     0x01, // Update two registers
     0x30, // Always on and selected internal reference
-    0x72 // PGA 64 and 20 SPS
+    0x72 // PGA 128 and 20 SPS
   };
   sendCommand(wregBuffer, 4);
   byte rregBuffer[] = {0x22, 0x01, 0xFF, 0xFF};
@@ -117,7 +118,7 @@ void setup() {
 
 
 void loop() {
-  if (drdy) {
+  if (drdy && r) {
     byte readBuffer[] = {0xFF, 0xFF};
     sendCommand(readBuffer, 2);
     int16_t val = (readBuffer[0] << 8) | readBuffer[1];
@@ -145,4 +146,6 @@ void loop() {
       //Serial.println("D");
     drdy = 0;
   }
+  else if (!r && Serial.available())
+    r = true;
 }
